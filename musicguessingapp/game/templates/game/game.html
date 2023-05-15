@@ -1,0 +1,27 @@
+<!--See peaks tulema põhi osa lehest-->
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Muusika</title>
+<meta charset="utf-8">
+</head>
+
+<body>
+<!--Siit saan kätte arvamise-->
+<h1>Sisesta laulu nimi:</h1>
+<form action="" method="get">
+    <label for="guess the song:"></label>
+    <input type="text" id="guess" name="guess">
+    <button type="submit">sisesta</button>
+</form>
+
+<h2>Mängi laul:</h2>
+<form action="" method="post">
+    <!--Selle buttoniga peaks käima funktsioon play_song(). On vaja, et laul mängiks siis, kui nuppu vajutatakse, aga mitte siis, kui lihtsalt veebileht laetakse, ehk mõlema puhul saadetakse request POST aga on vaja eristada need.-->
+    {% csrf_token %}
+    <button type="submit" name="play" value="start">Mängi</button>
+</form>
+</body>
+
+</html>
