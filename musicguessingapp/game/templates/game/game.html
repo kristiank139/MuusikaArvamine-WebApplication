@@ -1,3 +1,4 @@
+{% load static %}
 <!--See peaks tulema põhi osa lehest-->
 <!DOCTYPE html>
 <html>
@@ -5,23 +6,51 @@
 <head>
 <title>Muusika</title>
 <meta charset="utf-8">
+
+  <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" rel="stylesheet"/>
+  <link href="{% static './style.css' %}" rel="stylesheet"/>
+
 </head>
 
 <body>
 <!--Siit saan kätte arvamise-->
 <h1>Sisesta laulu nimi:</h1>
-<form action="" method="get">
+<form action="" method="post">
+  {% csrf_token %}
     <label for="guess the song:"></label>
     <input type="text" id="guess" name="guess">
     <button type="submit">sisesta</button>
 </form>
 
-<h2>Mängi laul:</h2>
-<form action="" method="post">
-    <!--Selle buttoniga peaks käima funktsioon play_song(). On vaja, et laul mängiks siis, kui nuppu vajutatakse, aga mitte siis, kui lihtsalt veebileht laetakse, ehk mõlema puhul saadetakse request POST aga on vaja eristada need.-->
-    {% csrf_token %}
-    <button type="submit" name="play" value="start">Mängi</button>
-</form>
-</body>
+<h2>Mängi laul:</h1>
+<!--See on MediaPlayer, kus saab laulu mängida-->
+<div class="contain">
+    <div class="container">
+     <div class="music-player">
+       {% for item in page_obj %}
+      <center><a href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}"><i class="fa fa-step-backward fa-2x"></i></a> &nbsp; &nbsp; &nbsp; <a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }} {% endif %}"><i class="fa fa-step-forward fa-2x"></i></a></center>
+      <div class="player">
+       <audio class="fc-media" style="width: 100%;">
+        <source src="{% if item.audio_file %}{{item.audio_file.url}} {% else %} {{item.audio_link}} {% endif %}" type="audio/mp3"/>
+       </audio>
+      </div>
+      {% endfor %}
+     </div>
+    </div>
+   </div>
 
+</body>
 </html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js">
+</script>
+<script src="{% static './script.js' %}">
+</script>
+<script>
+    function play() {
+
+    }
+</script>
