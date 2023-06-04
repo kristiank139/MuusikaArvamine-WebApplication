@@ -25,6 +25,7 @@ def index(request):
     link = request.POST.get("playlist")
     conn = sqlite3.connect("db.sqlite3")
     c = conn.cursor()
+    exists = False
     try:
         # Create a new record
         linkSelect = "SELECT audio_link FROM game_song"
@@ -32,6 +33,7 @@ def index(request):
         for list in c.fetchall():
             if link in list:
                 exists = True
+                break
             else:
                 exists = False
         if exists:
