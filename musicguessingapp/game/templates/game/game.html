@@ -4,66 +4,51 @@
 <html>
 
 <head>
-<title>Muusika</title>
+<title>{{ playlist.title }}</title>
 <meta charset="utf-8">
 
   <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" rel="stylesheet"/>
   <link href="{% static './style.css' %}" rel="stylesheet"/>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js"></script>
+  <script src="{% static './script.js' %}"></script>
+
+  <script></script>
 </head>
 
 <body>
 <!--Siit saan kätte arvamise-->
 <h1>Sisesta laulu nimi:</h1>
-<form action="" method="post">
+<form action="" method="post"> <!--Kuidagi on vaja saata laulu id number-->
   {% csrf_token %}
     <label for="Arva laul:"></label>
     <input type="text" id="guess" name="guess">
     <button type="submit">sisesta</button>
 </form>
 
-<h1>Sisesta Youtube'i link(laul või playlist):</h1>
-<form action="" method="post">
-  {% csrf_token %}
-  <label for="Sisesta Youtube'i link(laul või playlist):"></label>
-  <input type="text" id="link" name="link">
-  <button type="submit">sisesta</button>
-
-  {% if duplicate %} {# Kui laul on juba olemas, siis tekib tekst #}
-  <h2>{{duplicate}}</h2>
-  {% else %}
-  {% endif %}
-</form>
-
-<h2>Mängi laul:</h1>
+<h2>Mängi laul:</h2>
 <!--See on MediaPlayer, kus saab laulu mängida-->
 <div class="contain">
-    <div class="container">
-     <div class="music-player">
-       {% for item in page_obj %}
-      <center><a href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}"><i class="fa fa-step-backward fa-2x"></i></a> &nbsp; &nbsp; &nbsp; <a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }} {% endif %}"><i class="fa fa-step-forward fa-2x"></i></a></center>
-      <div class="player">
-       <audio class="fc-media" style="width: 100%;">
-        <source src="{% if item.audio_file %}{{item.audio_file.url}} {% else %} {{item.audio_link}} {% endif %}" type="audio/mp3"/>
-       </audio>
+  <div class="container">
+      <div class="music-player">
+        {% for item in page_obj %}
+        <center>
+          <a href="{% if page_obj.has_previous %}http://127.0.0.1:8000/playlist/1/{{ page_obj.previous_page_number }}{% endif %}"><i class="fa fa-step-backward fa-2x"></i></a>
+          &nbsp; &nbsp; &nbsp; 
+          <a href="{% if page_obj.has_next %}http://127.0.0.1:8000/playlist/1/{{ page_obj.next_page_number }} {% endif %}"><i class="fa fa-step-forward fa-2x"></i></a>
+        </center>
+       <div class="player">
+        <audio class="fc-media" style="width: 100%;">
+         <source src="{% if item.audio_file %}{{item.audio_file.url}} {% else %} {{item.audio_link}} {% endif %}" type="audio/mp3"/>
+        </audio>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-     </div>
-    </div>
-   </div>
+  </div>
+</div>
 
 </body>
 </html>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js">
-</script>
-<script src="{% static './script.js' %}">
-</script>
-<script>
-    function play() {
-
-    }
-</script>

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'game', # Lisasin game app'i
+    'mathfilters' # Custom Django template tag, millega saab tehteid teha
 ]
 
 MIDDLEWARE = [
