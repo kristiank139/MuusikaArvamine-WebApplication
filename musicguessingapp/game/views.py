@@ -5,7 +5,7 @@ import sqlite3
 
 # Create your views here.
 
-def total_songs(playlistid): # Jäi pooleli, tee nii et databasest saaks laulude arv mille playlist_id on nt 1
+def total_songs(playlistid): # Annab numbri, kui palju laule on playlist'is
     # Ühendamine andmebaasiga
     conn = sqlite3.connect("db.sqlite3")
 
