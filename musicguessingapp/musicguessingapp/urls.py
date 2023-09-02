@@ -23,6 +23,7 @@ from django.contrib.staticfiles.urls import static
 
 urlpatterns = [
     path('admin/', admin.site.urls), # http://127.0.0.1:8000/admin/
+    path('api-auth/', include('rest_framework.urls')),
     path("", include("game.urls")), # http://127.0.0.1:8000/
 ]
 

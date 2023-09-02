@@ -1,13 +1,18 @@
 *:focus{
     outline: none;
 }
+body {
+    background-color: #EAE0D5;
+}
 
 h1, form {
     text-align: center;
+    font-family: 'Josefin Sans', sans-serif;
 }
 h2 {
     margin-top: 50px;
     text-align: center;
+    font-family: 'Josefin Sans', sans-serif;
 }
 
 .container {
@@ -28,6 +33,18 @@ h2 {
     border-radius: 10px 10px 10px 10px;
     background: transparent linear-gradient(to bottom,rgba(10,11,31,0.9) 50%,rgb(10,11,31) 70%) repeat scroll 0 0;
     box-shadow: 1px 10px 20px 5px #222;
+}
+
+.correct {
+    margin-top: 1;
+}
+
+.wrong {
+    margin-top: 1;
+}
+
+.inv {
+    display: none;
 }
 
 .player {

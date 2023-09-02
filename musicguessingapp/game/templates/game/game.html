@@ -11,22 +11,33 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" rel="stylesheet"/>
   <link href="{% static './style.css' %}" rel="stylesheet"/>
 
+  <!--Josefin Sans font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com"> 
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">   
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js"></script>
   <script src="{% static './script.js' %}"></script>
 
-  <script></script>
 </head>
 
 <body>
 <!--Siit saan kätte arvamise-->
 <h1>Sisesta laulu nimi:</h1>
-<form action="" method="post"> <!--Kuidagi on vaja saata laulu id number-->
+<label for="Arva laul:"></label>
+<input type="text" id="guess" name="guess">
+<button type="button" id="check-button">sisesta</button>
+
+<!--Siit saab minna järgmisele laulu lehele-->
+<form action='' method="post">
   {% csrf_token %}
-    <label for="Arva laul:"></label>
-    <input type="text" id="guess" name="guess">
-    <button type="submit">sisesta</button>
+  {{ form.as_p }}
+  <button type="submit" id="next" class="inv">järgmine</button>
 </form>
+
+<h2 id="correct" class="correct inv">Õige</h2>
+<h2 id="wrong" class="wrong inv">Vale</h2>
 
 <h2>Mängi laul:</h2>
 <!--See on MediaPlayer, kus saab laulu mängida-->
@@ -52,3 +63,59 @@
 </body>
 </html>
 
+<script>
+
+  function guesscheck(guessValue) {
+      $.ajax({
+          type: "POST",
+          url: "{% url 'App:playlist' playlist_id=playlist_id song_id=song_id %}",
+          data: {
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+              guess: guessValue,
+          },
+          success: function(response) {
+              const correct = document.getElementById('correct');
+              const wrong = document.getElementById('wrong');
+              const button = document.getElementById('next');
+              const guess = response.guess;
+              
+              if (guess === 'correct') {
+                  wrong.classList.add('inv')
+                  correct.classList.remove('inv');
+                  button.classList.remove('inv')
+                  disableGuessing();
+              } else {
+                  wrong.classList.remove('inv');
+              }
+              console.log(response);
+          },
+          error: function(error) {
+              console.log(error);
+              // Handle error case
+          }
+      });
+  }
+
+  function disableGuessing() {
+    const guessInput = document.getElementById("guess");
+    const checkButton = document.getElementById("check-button");
+    
+    if (guessInput && checkButton) {
+        guessInput.disabled = true;
+        checkButton.disabled = true;
+    }
+}
+  
+$(document).ready(function() {
+    console.log('ready');
+    $("#check-button").click(function() {
+        console.log('button clicked');
+        // Get the value of the input field
+        const guessValue = document.getElementById("guess").value;
+      
+        // Call your AJAX function and pass the guessValue
+        guesscheck(guessValue);
+    });
+});
+
+</script>
