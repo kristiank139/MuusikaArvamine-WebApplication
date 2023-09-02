@@ -17,7 +17,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -27,7 +26,7 @@ SECRET_KEY = 'django-insecure-@_9k@19uogffw8f!n(fk=d6t3i8t11y+lpui8xn6ab(2ayc4rh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['domeen.ee', '127.0.0.1']
 
 
 # Application definition
@@ -40,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'game', # Lisasin game app'i
+    'rest_framework' # Framework, mis serveerib andmeid frontend'i
 ]
 
 MIDDLEWARE = [
@@ -80,6 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'HOST': '127.0.0.1',
     }
 }
 

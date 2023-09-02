@@ -1,13 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
-from .models import Song
-from django.http import  HttpResponseRedirect
+from django.http import JsonResponse
+from .models import Song, Playlist
 import sqlite3
-from pytube import YouTube, Playlist
-import os
 
 # Create your views here.
 
+<<<<<<< HEAD
 def index(request):
     paginator = Paginator(Song.objects.all(),1)
     page_number = request.GET.get('page', 1) # Siit saab laulu numbri, kui number on None, siis laul on esimene
@@ -75,18 +74,25 @@ def song_names(db, song_num):
     c = conn.cursor()
     c.execute("SELECT * FROM 'game_song'")
     return c.fetchall()[int(song_num) - 1][1]
+=======
+def total_songs(playlistid): # Annab numbri, kui palju laule on playlist'is
+    # Ühendamine andmebaasiga
+    conn = sqlite3.connect("db.sqlite3")
 
-def total_songs(db):
-    conn = sqlite3.connect(db)
-    c = conn.cursor()
-    c.execute("SELECT * FROM 'game_song'")
-    return c.fetchall()
+    # Leiab kõik laulude arv, mille playlist_id on playlistid
+    query = f"SELECT COUNT(*) FROM game_playlist_songs WHERE playlist_id = ?;"
+    cursor = conn.execute(query, (playlistid,))
+    count = cursor.fetchone()[0]
 
-def durationify(duration): # Teeb sekundid õigeks formaadiks
-    seconds = duration % 60
-    minutes = int((duration - seconds) / 60)
-    return f"{str(minutes)}:{str(seconds)}"
+    conn.close()
+>>>>>>> new
 
+    return count
+
+def index(request):
+    conn = sqlite3.connect("db.sqlite3")
+
+<<<<<<< HEAD
 def writesongs(db, link, filename, duration, pLink): # Kirjutab andmed database'i
     conn = sqlite3.connect(db)
     c = conn.cursor()
@@ -104,3 +110,42 @@ def writesongs(db, link, filename, duration, pLink): # Kirjutab andmed database'
 
     finally:
         conn.close()
+=======
+    # Leiab kõik laulude arv, mille playlist_id on playlistid
+    query = f"SELECT title FROM game_playlist"
+    cursor = conn.execute(query)
+    count = cursor.fetchall()
+    playlistid = []
+    for playlist in count:
+        playlistid.append(playlist[0])
+
+    conn.close()
+    return render(request, "game/avaleht.html", {"playlistid": playlistid}) # Näitab veebilehte, võtab template'i game templates/game folderist ja annab edasi context'o
+
+def playlist_page(request, playlist_id, song_id):
+    playlist = get_object_or_404(Playlist, pk=playlist_id)
+    songs = playlist.songs.all()
+    
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest': # Kui on AJAX request
+        if request.POST.get("guess").lower() == songs[song_id - 1].title.lower(): # Kontrollib, kas laulu number ja arvamine sobitub andmebaasist võetud laulu numbri nimega
+            print("õige")
+            return JsonResponse({'guess': 'correct'})
+        else:
+            return JsonResponse({'guess': 'wrong'})
+    
+    # Vaja võtta laulu id ja arvamine ning vaadata kas need on samad
+    if request.method == "POST": # Kontrollib, kas request method on post ja guess on selle sees
+
+        next_song = int(song_id) + 1
+        total = total_songs(playlist_id)
+        if next_song > total: #len(total_songs("db.sqlite3")): Kui rohkem lehti ei ole siis redirectib tagasi esimesele lehele
+            return redirect(f"/playlist/{playlist_id}/1")
+        else:
+            return redirect(f"/playlist/{playlist_id}/{next_song}") # Kui õigesti ära arvad läheb järgmisele lehele, võibolla saaks ka nii teha, et kogu aeg oled samal lehel
+
+    paginator = Paginator(songs, 1) # Üks laul lehekülje kohta
+    page_obj = paginator.get_page(song_id)
+    
+    context = {'playlist': playlist, 'songs': songs, 'page_obj': page_obj, 'playlist_id': playlist_id, 'song_id': song_id}
+    return render(request, 'game/game.html', context)
+>>>>>>> new

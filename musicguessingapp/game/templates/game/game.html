@@ -4,66 +4,118 @@
 <html>
 
 <head>
-<title>Muusika</title>
+<title>{{ playlist.title }}</title>
 <meta charset="utf-8">
 
   <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" rel="stylesheet"/>
   <link href="{% static './style.css' %}" rel="stylesheet"/>
 
+  <!--Josefin Sans font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com"> 
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">   
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js"></script>
+  <script src="{% static './script.js' %}"></script>
+
 </head>
 
 <body>
 <!--Siit saan kätte arvamise-->
 <h1>Sisesta laulu nimi:</h1>
-<form action="" method="post">
+<label for="Arva laul:"></label>
+<input type="text" id="guess" name="guess">
+<button type="button" id="check-button">sisesta</button>
+
+<!--Siit saab minna järgmisele laulu lehele-->
+<form action='' method="post">
   {% csrf_token %}
-    <label for="Arva laul:"></label>
-    <input type="text" id="guess" name="guess">
-    <button type="submit">sisesta</button>
+  {{ form.as_p }}
+  <button type="submit" id="next" class="inv">järgmine</button>
 </form>
 
-<h1>Sisesta Youtube'i link(laul või playlist):</h1>
-<form action="" method="post">
-  {% csrf_token %}
-  <label for="Sisesta Youtube'i link(laul või playlist):"></label>
-  <input type="text" id="link" name="link">
-  <button type="submit">sisesta</button>
+<h2 id="correct" class="correct inv">Õige</h2>
+<h2 id="wrong" class="wrong inv">Vale</h2>
 
-  {% if duplicate %} {# Kui laul on juba olemas, siis tekib tekst #}
-  <h2>{{duplicate}}</h2>
-  {% else %}
-  {% endif %}
-</form>
-
-<h2>Mängi laul:</h1>
+<h2>Mängi laul:</h2>
 <!--See on MediaPlayer, kus saab laulu mängida-->
 <div class="contain">
-    <div class="container">
-     <div class="music-player">
-       {% for item in page_obj %}
-      <center><a href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}"><i class="fa fa-step-backward fa-2x"></i></a> &nbsp; &nbsp; &nbsp; <a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }} {% endif %}"><i class="fa fa-step-forward fa-2x"></i></a></center>
-      <div class="player">
-       <audio class="fc-media" style="width: 100%;">
-        <source src="{% if item.audio_file %}{{item.audio_file.url}} {% else %} {{item.audio_link}} {% endif %}" type="audio/mp3"/>
-       </audio>
+  <div class="container">
+      <div class="music-player">
+        {% for item in page_obj %}
+        <center>
+          <a href="{% if page_obj.has_previous %}http://127.0.0.1:8000/playlist/1/{{ page_obj.previous_page_number }}{% endif %}"><i class="fa fa-step-backward fa-2x"></i></a>
+          &nbsp; &nbsp; &nbsp; 
+          <a href="{% if page_obj.has_next %}http://127.0.0.1:8000/playlist/1/{{ page_obj.next_page_number }} {% endif %}"><i class="fa fa-step-forward fa-2x"></i></a>
+        </center>
+       <div class="player">
+        <audio class="fc-media" style="width: 100%;">
+         <source src="{% if item.audio_file %}{{item.audio_file.url}} {% else %} {{item.audio_link}} {% endif %}" type="audio/mp3"/>
+        </audio>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-     </div>
-    </div>
-   </div>
+  </div>
+</div>
 
 </body>
 </html>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js">
-</script>
-<script src="{% static './script.js' %}">
-</script>
 <script>
-    function play() {
 
+  function guesscheck(guessValue) {
+      $.ajax({
+          type: "POST",
+          url: "{% url 'App:playlist' playlist_id=playlist_id song_id=song_id %}",
+          data: {
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+              guess: guessValue,
+          },
+          success: function(response) {
+              const correct = document.getElementById('correct');
+              const wrong = document.getElementById('wrong');
+              const button = document.getElementById('next');
+              const guess = response.guess;
+              
+              if (guess === 'correct') {
+                  wrong.classList.add('inv')
+                  correct.classList.remove('inv');
+                  button.classList.remove('inv')
+                  disableGuessing();
+              } else {
+                  wrong.classList.remove('inv');
+              }
+              console.log(response);
+          },
+          error: function(error) {
+              console.log(error);
+              // Handle error case
+          }
+      });
+  }
+
+  function disableGuessing() {
+    const guessInput = document.getElementById("guess");
+    const checkButton = document.getElementById("check-button");
+    
+    if (guessInput && checkButton) {
+        guessInput.disabled = true;
+        checkButton.disabled = true;
     }
+}
+  
+$(document).ready(function() {
+    console.log('ready');
+    $("#check-button").click(function() {
+        console.log('button clicked');
+        // Get the value of the input field
+        const guessValue = document.getElementById("guess").value;
+      
+        // Call your AJAX function and pass the guessValue
+        guesscheck(guessValue);
+    });
+});
+
 </script>
