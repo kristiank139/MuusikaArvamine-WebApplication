@@ -58,4 +58,6 @@ def playlist_page(request, playlist_id, song_id):
     page_obj = paginator.get_page(song_id)
     
     context = {'playlist': playlist, 'songs': songs, 'page_obj': page_obj, 'playlist_id': playlist_id, 'song_id': song_id}
+
     return render(request, 'game/game.html', context)
+
