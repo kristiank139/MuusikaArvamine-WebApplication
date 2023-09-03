@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-from django.urls import path
-=======
 from django.urls import path, include
->>>>>>> new
 from . import views
 
 app_name = "App"
