@@ -16,7 +16,7 @@ var audio = {
                   timeAndDurationSeparator: '<span></span>',
                   iPadUseNativeControls: true,
                   iPhoneUseNativeControls: true,
-                  AndroidUseNativeControls: true                
+                  AndroidUseNativeControls: true             
               });            
           }        
       },

@@ -3,6 +3,8 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from .models import Song, Playlist
 import sqlite3
+import random
+from random import shuffle
 
 # Create your views here.
 
@@ -33,29 +35,45 @@ def index(request):
     conn.close()
     return render(request, "game/avaleht.html", {"playlistid": playlistid}) # Näitab veebilehte, võtab template'i game templates/game folderist ja annab edasi context'o
 
-def playlist_page(request, playlist_id, song_id):
+def playlist_page(request, playlist_id):
     playlist = get_object_or_404(Playlist, pk=playlist_id)
-    songs = playlist.songs.all()
+    songs = list(playlist.songs.all())
+
+    if 'song_order' not in request.session:
+        request.session['song_order'] = list(range(len(songs)))
+        shuffle(request.session['song_order'])
+
+    song_order = request.session['song_order']
     
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest': # Kui on AJAX request
-        if request.POST.get("guess").lower() == songs[song_id - 1].title.lower(): # Kontrollib, kas laulu number ja arvamine sobitub andmebaasist võetud laulu numbri nimega
+        response = {'guessTitle': 'wrong', 'guessAuthor': 'wrong'}
+        song_id = int(request.POST.get("song_id"))
+        print(songs[song_id ].artist.lower())
+        print(songs[song_id].title.lower())
+        print(request.POST.get("guessTitle").lower())
+        print(songs[song_id].title.lower())
+
+        if request.POST.get("guessTitle").lower() == songs[song_id].title.lower(): # Kontrollib, kas laulu number ja arvamine sobitub andmebaasist võetud laulu numbri nimega
             print("õige")
-            return JsonResponse({'guess': 'correct'})
-        else:
-            return JsonResponse({'guess': 'wrong'})
+            response.update({'guessTitle': 'correct'})
+        if request.POST.get("guessAuthor").lower() == songs[song_id].artist.lower():
+            response.update({'guessAuthor': 'correct'})
+
+        return JsonResponse(response)
     
-    # Vaja võtta laulu id ja arvamine ning vaadata kas need on samad
-    if request.method == "POST": # Kontrollib, kas request method on post ja guess on selle sees
+    if request.method == "POST": # Kontrollib, kas request method on post
 
-        next_song = int(song_id) + 1
-        total = total_songs(playlist_id)
-        if next_song > total: #len(total_songs("db.sqlite3")): Kui rohkem lehti ei ole siis redirectib tagasi esimesele lehele
-            return redirect(f"/playlist/{playlist_id}/1")
-        else:
-            return redirect(f"/playlist/{playlist_id}/{next_song}") # Kui õigesti ära arvad läheb järgmisele lehele, võibolla saaks ka nii teha, et kogu aeg oled samal lehel
+        return redirect(f"/playlist/{playlist_id}/")
+    
+    if len(song_order) == 0:
+        request.session['song_order'] = list(range(len(songs)))
+        shuffle(request.session['song_order'])
+        song_order = request.session['song_order']
 
-    paginator = Paginator(songs, 1) # Üks laul lehekülje kohta
-    page_obj = paginator.get_page(song_id)
+    print(song_order)
+    song_id = song_order.pop()
+    print(song_id)
+    page_obj = songs[song_id]
     
     context = {'playlist': playlist, 'songs': songs, 'page_obj': page_obj, 'playlist_id': playlist_id, 'song_id': song_id}
     return render(request, 'game/game.html', context)

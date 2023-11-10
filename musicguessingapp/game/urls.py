@@ -12,6 +12,6 @@ app_name = "App"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("playlist/<int:playlist_id>/<int:song_id>", views.playlist_page, name="playlist"),
+    path("playlist/<int:playlist_id>/", views.playlist_page, name="playlist"),
 
 ]

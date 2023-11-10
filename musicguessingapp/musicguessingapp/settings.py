@@ -28,6 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['domeen.ee', '127.0.0.1']
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # or another appropriate session engine
+SESSION_COOKIE_NAME = 'song'  # Replace with your preferred session cookie name
+SESSION_SAVE_EVERY_REQUEST = True  # Ensure sessions are saved on every request
 
 # Application definition
 
