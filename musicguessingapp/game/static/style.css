@@ -3,56 +3,45 @@
 }
 
 body {
-    background-color: #EAE0D5;
+    background-color: #e7e7e7;
     padding: 5%;
     font-family: 'Roboto', sans-serif;
+    text-align: center;
 }
 
-h1, form {
-    text-align: center;
+h1 {
     font-size: 45px;
 }
 
 h2 {
     margin-top: 30px;
-    text-align: center;
     font-size: 35px;
 }
 
-input {
-    margin-bottom: 5px;
-    width: 100%;
-    height: 50px;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid #333;
-    width: 20%;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
+.playlistid {
+    padding-top: 40px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
-input:focus {
-    width: 100%;
+.choices {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
-input:disabled {
-    background-color: #00cc66 !important;
-    color: green;
-}
-
-label {
-    width: 100%;
-}
-
-.red {
-    background-color: #ff3333;
-    color: white;
+.cbuttons {
+    margin: 20px;
+    height: 20px;
+    width: 10%;
+    color: #333;
 }
 
 .container {
-    display: block;
     width: 100%;
     height: 750px;
+    display: block;
     margin: auto;
     overflow: hidden;
     background-size: cover;
@@ -63,7 +52,6 @@ label {
     border: none;
     color: white;
     padding: 10px 15px;
-    text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
@@ -84,17 +72,10 @@ label {
     background: transparent;
 }
 
-.playlistid {
-    padding-top: 40px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
 .playlist {
-    display: flex; /* Add this to make the text center vertically */
-    flex-direction: column; /* Stack content vertically */
-    align-items: center; /* Center content vertically */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 150px;
     margin: 10px;
     max-height: 130px;
@@ -102,8 +83,7 @@ label {
     background-color: #D1A08A;
     color: white;
     text-decoration: none;
-    justify-content: center; /* Center content horizontally */
-    text-align: center; /* Center text horizontally */
+    justify-content: center;
 }
 
 .playlist:hover {
@@ -247,7 +227,6 @@ label {
     width: 40px;
     height: 25px;
     margin-left: 0px;
-    text-align: center;
     font-size: 10px;
     background: #fff;
     border: 0;

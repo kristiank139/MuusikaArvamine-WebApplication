@@ -12,11 +12,10 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" rel="stylesheet"/>
   <link href="{% static './style.css' %}" rel="stylesheet"/>
 
-  <!--Google'i API'st fondid Josefin Sans ja Roboto-->
-  <link rel="preconnect" href="https://fonts.googleapis.com"> 
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">   
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+  <!--Google'i API'st font Roboto-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
   <!--Scriptid MediaPlayeri jaoks-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -26,19 +25,24 @@
 </head>
 
 <body>
-<!--Form pealkirja ja autori kätte saamiseks-->
+  <h1>Arva ära laul:</h1>
+  <div class="choices">
+    <button type="button" id="c1" class="cbuttons">av</button>
+    <button type="button" id="c2" class="cbuttons">ad</button>
+    <button type="button" id="c3" class="cbuttons">as</button>
+    <button type="button" id="c4" class="cbuttons">ab</button>
+  </div>
+<!--
 <div class="form">
-
-  <div>
     <h1>Arva ära laul:</h1>
-    <div>
+    <div class="inputs">
       <label for="guessTitle">
         Pealkiri
       </label>
       <input type="text" id="guessTitle" name="guessTitle" class="animated-underline">
     </div>  
     <br>
-    <div>
+    <div class="inputs">
       <label for="guessAuthor">
         Autor
       </label>
@@ -49,10 +53,7 @@
       <button type="button" id="check-button" class="button">Sisesta</button>
       <button type="button" id="answer" class="button">Õige vastus</button>
     </div>
-    
-  </div>
 
-  <!--Siit edasi minna järgmisele laulule, kui vastus on õige-->
   <div>
     <form action='' method="post">
       {% csrf_token %}
@@ -61,7 +62,7 @@
     </form>
   </div>
 </div>
-<!--Formi lõpp-->
+-->
 
 <h2>Mängi laul:</h2>
 
