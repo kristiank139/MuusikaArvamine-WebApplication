@@ -27,12 +27,14 @@
 <body>
   <h1>Arva ära laul:</h1>
   <div class="choices">
-    <button type="button" id="c1" class="cbuttons">av</button>
-    <button type="button" id="c2" class="cbuttons">ad</button>
-    <button type="button" id="c3" class="cbuttons">as</button>
-    <button type="button" id="c4" class="cbuttons">ab</button>
+    <button type="button" id="0" class="cbuttons b0" onclick="">{{valik1}}</button>
+    <button type="button" id="1" class="cbuttons b1" onclick="">{{valik2}}</button>
+    <button type="button" id="2" class="cbuttons b2" onclick="">{{valik3}}</button>
+    <button type="button" id="3" class="cbuttons b3" onclick="">{{valik4}}</button>
+    <h2>{{õige}}</h2>
   </div>
-<!--
+
+<!-- Ära arvamise form
 <div class="form">
     <h1>Arva ära laul:</h1>
     <div class="inputs">
@@ -86,17 +88,27 @@
 
 <script>
   // Vajalik AJAX kood
-  function guesscheck(guessTitleValue, guessAuthorValue) {
-      $.ajax({
+  function guessCheck(buttonId) {
+      if ("{{id}}" == buttonId) {
+        const button = document.getElementById(buttonId);
+        // Tee midagi kui valik on õige
+      } else {
+        // Tee midagi kui valik on vale
+      }
+      /*$.ajax({
           type: "POST",
           url: "{% url 'App:playlist' playlist_id=playlist_id %}",
           data: {
               csrfmiddlewaretoken: '{{ csrf_token }}',
               guessTitle: guessTitleValue,
               guessAuthor: guessAuthorValue,
-              song_id: "{{song_id}}",
+              song_id: "{{id}}",
           },
           success: function(response) {
+              if (song_id == buttonId) {
+                console.log("correct")
+              }
+              /*
               const correct = document.getElementById('correct');
               const wrong = document.getElementById('wrong');
               const button = document.getElementById('next');
@@ -132,20 +144,25 @@
           error: function(error) {
               console.log(error);
               // Handle error case
-          }
-      });
+              
+
+         }
+      })*/
   }
   
 $(document).ready(function() {
-    $("#check-button").click(function() {
+    $(".cbuttons").click(function() {
         // Sisendite väärtused
-        const guessTitleValue = document.getElementById("guessTitle").value;
-        const guessAuthorValue = document.getElementById("guessAuthor").value;
-        console.log(guessAuthorValue)
-        console.log(guessTitleValue)
+        //const guessTitleValue = document.getElementById("guessTitle").value;
+        //const guessAuthorValue = document.getElementById("guessAuthor").value;
+        //console.log(guessAuthorValue)
+        //console.log(guessTitleValue)
 
         // Kutsun AJAX funktsiooni ja edastan guessTitleValue ja guessAuthorValue väärtused
-        guesscheck(guessTitleValue, guessAuthorValue);
+        //guesscheck(guessTitleValue, guessAuthorValue);
+        console.log("click1")
+        const buttonId = this.id;
+        guessCheck(buttonId);
     });
 });
 

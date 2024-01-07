@@ -4,7 +4,7 @@
 
 body {
     background-color: #e7e7e7;
-    padding: 5%;
+    padding: 3%;
     font-family: 'Roboto', sans-serif;
     text-align: center;
 }
@@ -14,7 +14,6 @@ h1 {
 }
 
 h2 {
-    margin-top: 30px;
     font-size: 35px;
 }
 
@@ -25,6 +24,25 @@ h2 {
     flex-wrap: wrap;
 }
 
+.playlist {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 150px;
+    margin: 10px;
+    max-height: 130px;
+    max-width: 130px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    justify-content: center;
+    border-radius: 18px;
+}
+
+.playlist:hover {
+    background-color: #3C3C3C;
+}
+
 .choices {
     display: flex;
     flex-direction: row;
@@ -33,9 +51,10 @@ h2 {
 
 .cbuttons {
     margin: 20px;
-    height: 20px;
-    width: 10%;
+    height: 40px;
+    width: 12%;
     color: #333;
+    border-color: #333;
 }
 
 .container {
@@ -59,6 +78,9 @@ h2 {
     cursor: pointer;
 }
 
+.green {
+    background-color: green;
+}
 .button:hover {
     background-color: #444141;
 }
@@ -70,24 +92,6 @@ h2 {
     height: 250px;
     margin: auto;
     background: transparent;
-}
-
-.playlist {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 150px;
-    margin: 10px;
-    max-height: 130px;
-    max-width: 130px;
-    background-color: #D1A08A;
-    color: white;
-    text-decoration: none;
-    justify-content: center;
-}
-
-.playlist:hover {
-    background-color: #DC9E82;
 }
 
 .inv {

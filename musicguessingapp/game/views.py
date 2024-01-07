@@ -46,7 +46,7 @@ def playlist_page(request, playlist_id):
     song_order = request.session['song_order']
     
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest': # Kui on AJAX request
-        response = {'guessTitle': 'wrong', 'guessAuthor': 'wrong'}
+        '''response = {'guessTitle': 'wrong', 'guessAuthor': 'wrong'}
         song_id = int(request.POST.get("song_id"))
         print(songs[song_id ].artist.lower())
         print(songs[song_id].title.lower())
@@ -59,7 +59,8 @@ def playlist_page(request, playlist_id):
         if request.POST.get("guessAuthor").lower() == songs[song_id].artist.lower():
             response.update({'guessAuthor': 'correct'})
 
-        return JsonResponse(response)
+        return JsonResponse(response)'''
+        print("here")
     
     if request.method == "POST": # Kontrollib, kas request method on post
 
@@ -70,10 +71,25 @@ def playlist_page(request, playlist_id):
         shuffle(request.session['song_order'])
         song_order = request.session['song_order']
 
+
+
     print(song_order)
     song_id = song_order.pop()
     print(song_id)
     page_obj = songs[song_id]
+
+    # Valikvastuste saamine juhuslikult
+    valikud = [songs[song_id].title]
+    i = 0
+    while i < 3:
+        num = random.randint(0, len(songs) - 1)
+        if songs[num].title not in valikud: # Vajalik, et ei tekiks mitut sama vastust
+            valikud.append(songs[num].title)
+            i += 1
+
+    shuffle(valikud) # Suvaline järjekord
+    print(valikud)
     
-    context = {'playlist': playlist, 'songs': songs, 'page_obj': page_obj, 'playlist_id': playlist_id, 'song_id': song_id}
+    context = {'playlist': playlist, 'songs': songs, 'page_obj': page_obj, 'playlist_id': playlist_id, 'song_id': song_id, 'valik1': valikud[0],
+               "valik2": valikud[1], "valik3": valikud[2], "valik4": valikud[3], "id": valikud.index(songs[song_id].title)}
     return render(request, 'game/game.html', context)
