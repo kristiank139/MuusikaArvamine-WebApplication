@@ -1,5 +1,16 @@
-*:focus{
+*:focus {
     outline: none;
+}
+
+/* Telo */
+@media (max-width: 736px) {
+    .cbuttons {
+        width: calc(50% - 10px);
+        font-size: 30px;
+    }
+    .media-player {
+        width: 300px;
+    }
 }
 
 body {
@@ -9,19 +20,24 @@ body {
     text-align: center;
 }
 
-h1 {
-    font-size: 45px;
+h2 {
+    font-size: 50px;
 }
 
-h2 {
-    font-size: 35px;
+.pealkiri {
+    margin-top: 50px;
 }
 
 .playlistid {
-    padding-top: 40px;
+    padding-top: 10px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.logo {
+    width: 10%;
+    height: 10%;
 }
 
 .playlist {
@@ -37,29 +53,54 @@ h2 {
     text-decoration: none;
     justify-content: center;
     border-radius: 18px;
+    transition: transform 0.3s ease;
 }
 
 .playlist:hover {
-    background-color: #3C3C3C;
+    transform: scale(1.03); 
+}
+
+.playlist:not(:hover) {
+    transition: transform 0.3s ease;
+}  
+
+.call {
+    text-align: left;
+    margin-left: 40px;
+    padding-top: 20px;
+    font-size: 30px;
+}
+
+.pea {
+    font-size: 45px;
 }
 
 .choices {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
 }
 
 .cbuttons {
-    margin: 20px;
-    height: 40px;
-    width: 12%;
+    font-size: 12px;
+    padding: 10px 15px;
+    margin: 12px;
+    width: auto;
+    min-width: 120px;
     color: #333;
-    border-color: #333;
+    border: 1px solid #333;
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.cbuttons:hover {
+    background-color: #eee;
 }
 
 .container {
     width: 100%;
-    height: 750px;
+    height: 220px;
     display: block;
     margin: auto;
     overflow: hidden;
@@ -88,8 +129,9 @@ h2 {
 .music-player {
     display: block;
     position: relative;
-    width: 400px;
-    height: 250px;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
     margin: auto;
     background: transparent;
 }
@@ -117,7 +159,7 @@ h2 {
 }
 
 .mejs__controls {
-    padding: 0 10%;
+    padding: 0 5%;
     background: transparent !important;
     display: block;
     position: relative;

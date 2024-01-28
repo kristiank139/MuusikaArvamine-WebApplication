@@ -1,184 +1,75 @@
 {% load static %}
-<!--Leht, kus saab laulu mängida ja ära arvata-->
-<!DOCTYPE html> 
+<!DOCTYPE html>
+<html lang="et">
+
 <head>
+    <!-- Võtab automaatsel playlist'i pealkirja -->
+    <title>{{ playlist.title }}</title>
 
-<!--Võtab automaatsel playlist'i pealkirja-->
-<title>{{ playlist.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
 
-<meta charset="utf-8">
-  <!--Font Awesome, vajalik nuppude ja MediaPlayeri ilusaks tegemiseks-->
-  <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" rel="stylesheet"/>
-  <link href="{% static './style.css' %}" rel="stylesheet"/>
+    <!-- Font Awesome, vajalik nuppude ja MediaPlayeri ilusaks tegemiseks -->
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" rel="stylesheet"/>
+    <link href="{% static './style.css' %}" rel="stylesheet"/>
 
-  <!--Google'i API'st font Roboto-->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- Google'i API'st font Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
-  <!--Scriptid MediaPlayeri jaoks-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js"></script>
-  <script src="{% static './script.js' %}"></script>
-
+    <!-- Scriptid MediaPlayeri jaoks -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js"></script>
+    <script src="{% static './script.js' %}"></script>
 </head>
 
 <body>
-  <h1>Arva ära laul:</h1>
-  <div class="choices">
-    <button type="button" id="0" class="cbuttons b0" onclick="">{{valik1}}</button>
-    <button type="button" id="1" class="cbuttons b1" onclick="">{{valik2}}</button>
-    <button type="button" id="2" class="cbuttons b2" onclick="">{{valik3}}</button>
-    <button type="button" id="3" class="cbuttons b3" onclick="">{{valik4}}</button>
-    <h2>{{õige}}</h2>
-  </div>
+    <h2 class="pealkiri">Mängi laul:</h2>
 
-<!-- Ära arvamise form
-<div class="form">
-    <h1>Arva ära laul:</h1>
-    <div class="inputs">
-      <label for="guessTitle">
-        Pealkiri
-      </label>
-      <input type="text" id="guessTitle" name="guessTitle" class="animated-underline">
-    </div>  
-    <br>
-    <div class="inputs">
-      <label for="guessAuthor">
-        Autor
-      </label>
-      <input type="text" id="guessAuthor" name="guessAuthor" class="animated-underline">
-    </div>
-    <br>
-    <div>
-      <button type="button" id="check-button" class="button">Sisesta</button>
-      <button type="button" id="answer" class="button">Õige vastus</button>
-    </div>
-
-  <div>
-    <form action='' method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" id="next" class="inv button">Järgmine</button>
-    </form>
-  </div>
-</div>
--->
-
-<h2>Mängi laul:</h2>
-
-<!--See on MediaPlayer, kus saab laulu mängida-->
-<div class="contain">
-  <div class="container">
-      <div class="music-player">
-          &nbsp; &nbsp; &nbsp; 
-       <div class="player">
-        <h1>{{item.title}}</h1>
-        <audio class="fc-media" style="width: 100%;">
-         <source src="{% if page_obj.audio_file %}{{page_obj.audio_file.url}} {% else %} {{page_obj.audio_link}} {% endif %}" type="audio/mp3"/>
-        </audio>
+    <!-- See on MediaPlayer, kus saab laulu mängida -->
+    <div class="contain">
+        <div class="container">
+            <div class="music-player">
+                &nbsp; &nbsp; &nbsp;
+                <div class="player">
+                    <h1>{{item.title}}</h1>
+                    <audio class="fc-media" preload="auto" autoplay loop style="width: 100%;">
+                        <source src="{% if page_obj.audio_file %}{{page_obj.audio_file.url}} {% else %} {{page_obj.audio_link}} {% endif %}" type="audio/mp3"/>
+                    </audio>
+                </div>
+            </div>
         </div>
-      </div>
-  </div>
-</div>
-<!--MediaPlayer lõpp-->
+    </div>
+    <!-- MediaPlayer lõpp -->
 
+    <!-- Valikvastused -->
+    <div class="choices">
+        <button type="button" id="0" class="cbuttons b0">{{valik1}}</button>
+        <button type="button" id="1" class="cbuttons b1">{{valik2}}</button>
+        <button type="button" id="2" class="cbuttons b2">{{valik3}}</button>
+        <button type="button" id="3" class="cbuttons b3">{{valik4}}</button>
+    </div>
 </body>
 
 <script>
-  // Vajalik AJAX kood
-  function guessCheck(buttonId) {
-      if ("{{id}}" == buttonId) {
-        const button = document.getElementById(buttonId);
-        // Tee midagi kui valik on õige
-      } else {
-        // Tee midagi kui valik on vale
-      }
-      /*$.ajax({
-          type: "POST",
-          url: "{% url 'App:playlist' playlist_id=playlist_id %}",
-          data: {
-              csrfmiddlewaretoken: '{{ csrf_token }}',
-              guessTitle: guessTitleValue,
-              guessAuthor: guessAuthorValue,
-              song_id: "{{id}}",
-          },
-          success: function(response) {
-              if (song_id == buttonId) {
-                console.log("correct")
-              }
-              /*
-              const correct = document.getElementById('correct');
-              const wrong = document.getElementById('wrong');
-              const button = document.getElementById('next');
-              const guessTitle = response.guessTitle;
-              const guessAuthor = response.guessAuthor;
-              const guessTitleInput = document.getElementById("guessTitle");
-              const guessAuthorInput = document.getElementById("guessAuthor");
-              const checkButton = document.getElementById("check-button");
-
-              if (guessTitleInput && guessTitle === 'correct') {
-                guessTitleInput.disabled = true;
-              } else {
-                guessTitleInput.classList.add('red');
-              }
-
-              if (guessAuthorInput && guessAuthor === 'correct') {
-                guessAuthorInput.disabled = true;
-              } else {
-                guessAuthorInput.classList.add('red');
-              }
-
-              if (guessTitle === 'correct' && guessAuthor === 'correct') {
-                checkButton.disabled = true;
-                wrong.classList.add('inv')
-                correct.classList.remove('inv');
-                button.classList.remove('inv')
-              } else {
-                wrong.classList.remove('inv');
-              }
-              
-              console.log(response);
-          },
-          error: function(error) {
-              console.log(error);
-              // Handle error case
-              
-
-         }
-      })*/
-  }
-  
-$(document).ready(function() {
-    $(".cbuttons").click(function() {
-        // Sisendite väärtused
-        //const guessTitleValue = document.getElementById("guessTitle").value;
-        //const guessAuthorValue = document.getElementById("guessAuthor").value;
-        //console.log(guessAuthorValue)
-        //console.log(guessTitleValue)
-
-        // Kutsun AJAX funktsiooni ja edastan guessTitleValue ja guessAuthorValue väärtused
-        //guesscheck(guessTitleValue, guessAuthorValue);
-        console.log("click1")
-        const buttonId = this.id;
-        guessCheck(buttonId);
-    });
-});
-
-$(document).ready(function() {
-    $("#answer").click(function() {
-        // Sisendite väärtused
-        const guessTitleInput = document.getElementById("guessTitle");
-        const guessAuthorInput = document.getElementById("guessAuthor");
-
-        if (guessTitleInput.disabled === false) {
-        document.getElementById("guessTitle").value = "{{page_obj.title}}".replace(/&quot;/g, '\"');
+    function guessCheck(buttonId) {
+        if ("{{id}}" == buttonId) {
+            const button = document.getElementById(buttonId);
+            // Tee midagi kui valik on õige
+            window.location.href = "/playlist/{{playlist_id}}";
+        } else {
+            // Tee midagi kui valik on vale
         }
-        if (guessAuthorInput.disabled === false) {
-        document.getElementById("guessAuthor").value = "{{page_obj.artist}}".replace(/&quot;/g, '\"');
-        }
-    });
-});
+    }
 
+    $(document).ready(function() {
+        $(".cbuttons").click(function() {
+            const buttonId = this.id;
+            guessCheck(buttonId);
+        });
+    });
 </script>
+
+</html>

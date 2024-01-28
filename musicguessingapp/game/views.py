@@ -45,23 +45,6 @@ def playlist_page(request, playlist_id):
 
     song_order = request.session['song_order']
     
-    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest': # Kui on AJAX request
-        '''response = {'guessTitle': 'wrong', 'guessAuthor': 'wrong'}
-        song_id = int(request.POST.get("song_id"))
-        print(songs[song_id ].artist.lower())
-        print(songs[song_id].title.lower())
-        print(request.POST.get("guessTitle").lower())
-        print(songs[song_id].title.lower())
-
-        if request.POST.get("guessTitle").lower() == songs[song_id].title.lower(): # Kontrollib, kas laulu number ja arvamine sobitub andmebaasist võetud laulu numbri nimega
-            print("õige")
-            response.update({'guessTitle': 'correct'})
-        if request.POST.get("guessAuthor").lower() == songs[song_id].artist.lower():
-            response.update({'guessAuthor': 'correct'})
-
-        return JsonResponse(response)'''
-        print("here")
-    
     if request.method == "POST": # Kontrollib, kas request method on post
 
         return redirect(f"/playlist/{playlist_id}/")
@@ -88,7 +71,6 @@ def playlist_page(request, playlist_id):
             i += 1
 
     shuffle(valikud) # Suvaline järjekord
-    print(valikud)
     
     context = {'playlist': playlist, 'songs': songs, 'page_obj': page_obj, 'playlist_id': playlist_id, 'song_id': song_id, 'valik1': valikud[0],
                "valik2": valikud[1], "valik3": valikud[2], "valik4": valikud[3], "id": valikud.index(songs[song_id].title)}

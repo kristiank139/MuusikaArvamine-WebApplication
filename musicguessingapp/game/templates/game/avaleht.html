@@ -4,40 +4,30 @@
 
 <html>
 
-    <head>
-        <title>Avaleht</title>
-        <meta charset="utf-8">
+<head>
+    <title>Avaleht</title>
+    <meta charset="utf-8">
 
-        <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelementplayer.min.css" rel="stylesheet"/>
-        <link href="{% static './style.css' %}" rel="stylesheet"/>
-      
-        <!--Josefin Sans font-->
-        <link rel="preconnect" href="https://fonts.googleapis.com"> 
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">   
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.7/mediaelement-and-player.min.js"></script>
-        <script src="{% static './script.js' %}"></script>
+    <link href="{% static './style.css' %}" rel="stylesheet"/>
 
-        <!--Font - Passion One-->
-        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Passion+One&display=swap" rel="stylesheet">
-        <!--Font - Roboto-->
-        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!--Font - Roboto-->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
-    </head>
+</head>
 
-    <body>
-        <header>  
-            <!--<img src="media/headphones1.jpg" alt="Logo" class="logo">-->
-            <h1>Muusika test</h1>
-        </header>
-        <container class="playlistid">
-            {% for playlist in playlistid %}
-                <a href="{% url 'App:playlist' forloop.counter %}" class="playlist"><h2>{{playlist}}</h2></a>
-            {% endfor %}
-        </container>
-    </body>
+<body>
+<header>  
+    <!--<img src="media/headphones1.jpg" alt="Logo" class="logo">-->
+    <h1 class="pea">Muusika test</h1>
+</header>
+<h1 class="call">Vali playlist:</h1>
+<container class="playlistid">
+    {% for playlist in playlistid %}
+    <a href="{% url 'App:playlist' forloop.counter %}" class="playlist" style="background-image: url('media/cover{{ forloop.counter }}.png'); background-size: cover;">
+        <h2>{{playlist}}</h2>
+    </a>
+    {% endfor %}
+</container>
+</body>
 
 </html>
