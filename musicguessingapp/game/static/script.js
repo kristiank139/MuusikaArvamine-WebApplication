@@ -14,9 +14,10 @@ var audio = {
                   features : ['playpause', 'current', 'duration', 'progress', 'volume', 'tracks', 'fullscreen'],
                   alwaysShowControls      : true,
                   timeAndDurationSeparator: '<span></span>',
-                  iPadUseNativeControls: true,
-                  iPhoneUseNativeControls: true,
-                  AndroidUseNativeControls: true                
+                  loop: true,
+                  //iPadUseNativeControls: true, Originaalkoodis oli sees, ilma on vist visuaalselt parem
+                  //iPhoneUseNativeControls: true,
+                  //AndroidUseNativeControls: true             
               });            
           }        
       },

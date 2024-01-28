@@ -1,53 +1,33 @@
 {% load static %}
+<!--Avaleht-->
 <!DOCTYPE html>
+
 <html>
-    <head>
-        <title>Avaleht</title>
 
-        <!--Font - Josefin Sans-->
-        <link rel="preconnect" href="https://fonts.googleapis.com"> 
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">   
+<head>
+    <title>Avaleht</title>
+    <meta charset="utf-8">
 
-        <!--Font - Passion One-->
-        <link rel="preconnect" href="https://fonts.googleapis.com"> 
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Passion+One&display=swap" rel="stylesheet">
+    <link href="{% static './style.css' %}" rel="stylesheet"/>
 
-        <style>
-            h1 {
-                text-align: center;
-                font-family: 'Josefin Sans', sans-serif;
-            }
-            .playlistid {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-            .playlist {
-                padding: 130px;
-                margin: 10px;
-                max-height: 130px;
-                max-width: 130px;
-                background-color: red;
-                font-family: 'Passion One', cursive;
-                color: white;
-                text-decoration: none;
-                transition: 0.35s;
-            }
-            .playlist:hover {
-                padding: 150px;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <h1>Muusika test</h1>
-        </header>
-        <container class="playlistid">
-            {% for playlist in playlistid %}
-                <a href="{% url 'App:playlist' forloop.counter 1 %}" class="playlist"><h2>{{playlist}}</h2></a>
-            {% endfor %}
-        </container>
-    </body>
+    <!--Font - Roboto-->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+<header>  
+    <!--<img src="media/headphones1.jpg" alt="Logo" class="logo">-->
+    <h1 class="pea">Muusika test</h1>
+</header>
+<h1 class="call">Vali playlist:</h1>
+<container class="playlistid">
+    {% for playlist in playlistid %}
+    <a href="{% url 'App:playlist' forloop.counter %}" class="playlist" style="background-image: url('media/cover{{ forloop.counter }}.png'); background-size: cover;">
+        <h2>{{playlist}}</h2>
+    </a>
+    {% endfor %}
+</container>
+</body>
+
 </html>
