@@ -70,6 +70,14 @@
             guessCheck(buttonId);
         });
     });
+
+    // Function to add the fa-2x class to the buttons
+    function addFa2xClass() {
+        $('.mejs__button').addClass('fa-3x');
+    }
+
+    // Add an event listener to the audio element to call the addFa2xClass function when it's loaded
+    document.querySelector('.fc-media').addEventListener('loadeddata', addFa2xClass);
 </script>
 
 </html>

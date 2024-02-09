@@ -10,9 +10,9 @@ var audio = {
           var media = $('audio.fc-media', (target !== undefined) ? target : 'body');            
           if (media.length) {                
               media.mediaelementplayer({                    
-                  audioHeight: 40,
+                  audioHeight: 60,
                   features : ['playpause', 'current', 'duration', 'progress', 'volume', 'tracks', 'fullscreen'],
-                  alwaysShowControls      : true,
+                  alwaysShowControls: true,
                   timeAndDurationSeparator: '<span></span>',
                   loop: true,
                   //iPadUseNativeControls: true, Originaalkoodis oli sees, ilma on vist visuaalselt parem
@@ -20,9 +20,8 @@ var audio = {
                   //AndroidUseNativeControls: true             
               });            
           }        
-      },
-          
-  },
+      },   
+   },
 };
 
 audio.init();
